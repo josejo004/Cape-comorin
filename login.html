@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login | Cape Comorin</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏍️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav-row">
+     <a href="index.html" class="logo">
+     <span class="logo-mark">
+  <img src="image/LOGO-UPDATED.png" alt="Cape Comorin Logo">
+</span>
+      <span class="logo-text"><strong>CAPE COMORIN</strong><small>Bike Rental &amp; Tours</small></span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html">Home</a><a href="bikes.html">Bikes</a><a href="tourist-places.html">Tourist Places</a>
+      <a href="blog.html">Blog</a><a href="booking.html">Booking Now</a>
+    </nav>
+    <div class="nav-right">
+      <a class="nav-call" href="tel:9500651544" data-cc-tel><span class="icon-circle">📞</span><span class="call-label" data-cc-phone>+91 95006 51544</span></a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="section" style="padding-top:70px;">
+    <div class="container auth-wrap">
+      <div class="auth-card">
+        <div class="auth-tabs">
+          <button class="active" data-tab="login" id="tab-login">Login</button>
+          <button data-tab="register" id="tab-register">Register</button>
+        </div>
+
+        <form class="auth-form active" id="form-login">
+          <div class="field"><label for="loginMobile">Mobile Number or Email</label><input id="loginMobile" required></div>
+          <div class="field"><label for="loginPass">Password</label><input id="loginPass" type="password" required></div>
+          <a href="#" id="forgot-link" style="font-size:0.85rem; color:var(--teal-dark); font-weight:600;">Forgot password?</a>
+          <button type="submit" class="btn btn-navy btn-block">Login</button>
+        </form>
+
+        <form class="auth-form" id="form-register">
+          <div class="field"><label for="regName">Full Name</label><input id="regName" required></div>
+          <div class="field"><label for="regMobile">Mobile Number</label><input id="regMobile" type="tel" required></div>
+          <div class="field"><label for="regEmail">Email</label><input id="regEmail" type="email" required></div>
+          <div class="field"><label for="regPass">Password</label><input id="regPass" type="password" required></div>
+          <button type="submit" class="btn btn-amber btn-block">Create Account</button>
+        </form>
+
+        <div id="auth-note" style="display:none; text-align:center; margin-top:16px; color:var(--teal-dark); font-weight:600; font-size:0.9rem;"></div>
+        <p class="auth-foot">This is a demo login screen. Connect a real authentication service to enable accounts, password resets and saved bookings.</p>
+      </div>
+
+      <div class="form-card" style="margin-top:26px;">
+        <h3 style="margin-bottom:14px;">My Dashboard (Demo)</h3>
+        <p style="color:var(--ink-soft); font-size:0.9rem; margin-bottom:16px;">Bookings made from this browser appear below.</p>
+        <div id="my-bookings"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none; padding-top:0;">
+      <span>© <span data-cc-year>2026</span> Cape Comorin. All Rights Reserved.</span>
+      <a href="index.html">Back to Home</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  const tabs = document.querySelectorAll(".auth-tabs button");
+  const forms = { login: document.getElementById("form-login"), register: document.getElementById("form-register") };
+  tabs.forEach(t => t.addEventListener("click", ()=>{
+    tabs.forEach(x=>x.classList.remove("active"));
+    t.classList.add("active");
+    Object.values(forms).forEach(f=>f.classList.remove("active"));
+    forms[t.dataset.tab].classList.add("active");
+  }));
+
+  function note(msg){
+    const el = document.getElementById("auth-note");
+    el.textContent = msg; el.style.display = "block";
+  }
+  document.getElementById("form-login").addEventListener("submit", e=>{ e.preventDefault(); note("Demo only — this screen doesn't sign you in yet."); });
+  document.getElementById("form-register").addEventListener("submit", e=>{ e.preventDefault(); note("Demo only — connect an authentication service to create real accounts."); });
+  document.getElementById("forgot-link").addEventListener("click", e=>{ e.preventDefault(); note("Demo only — password reset requires a connected authentication service."); });
+
+  const list = document.getElementById("my-bookings");
+  try{
+    const bookings = JSON.parse(localStorage.getItem("cc_bookings") || "[]");
+    list.innerHTML = bookings.length ? `
+      <table>
+        <thead><tr><th>Booking ID</th><th>Bike</th><th>Pickup</th><th>Status</th></tr></thead>
+        <tbody>${bookings.map(b=>`<tr><td>${b.id}</td><td>${b.bike}</td><td>${b.pickup}</td><td><span class="status-pill status-pending">${b.status}</span></td></tr>`).join("")}</tbody>
+      </table>` : "<p style='color:var(--ink-soft); font-size:0.9rem;'>No bookings yet — <a href='booking.html' style='color:var(--teal-dark); font-weight:700;'>book a bike</a> to see it here.</p>";
+  }catch(e){ list.innerHTML = "<p style='color:var(--ink-soft); font-size:0.9rem;'>Booking history unavailable.</p>"; }
+</script>
+</body>
+</html>

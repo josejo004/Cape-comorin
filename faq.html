@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ | Cape Comorin Bike Rental</title>
+<meta name="description" content="Answers to common questions about renting a bike or scooter from Cape Comorin in Kanyakumari.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏍️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .faq-item{border-bottom:1px solid var(--line); padding:20px 0;}
+  .faq-q{display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-family:var(--font-display); font-size:1.05rem;}
+  .faq-a{color:var(--ink-soft); margin-top:12px; display:none; font-size:0.94rem; line-height:1.7;}
+  .faq-item.open .faq-a{display:block;}
+  .faq-item.open .faq-q span{transform:rotate(45deg);}
+  .faq-q span{transition:transform .2s ease; font-size:1.4rem; color:var(--amber);}
+</style>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {"@type":"Question","name":"What documents do I need to rent a bike?","acceptedAnswer":{"@type":"Answer","text":"A valid driving licence and one government-issued photo ID."}},
+    {"@type":"Question","name":"Is a security deposit required?","acceptedAnswer":{"@type":"Answer","text":"Yes, a refundable deposit is collected at pickup and refunded when the bike is returned undamaged."}}
+  ]
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav-row">
+    <a href="index.html" class="logo"><span class="logo-mark">CC</span><span class="logo-text"><strong>CAPE COMORIN</strong><small>Bike Rental &amp; Tours</small></span></a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html">Home</a><a href="bikes.html">Bikes</a><a href="tourist-places.html">Tourist Places</a>
+      <a href="blog.html">Blog</a><a href="booking.html">Booking Now</a>
+    </nav>
+    <div class="nav-right"><a class="nav-call" href="tel:9500651544" data-cc-tel><span class="icon-circle">📞</span><span class="call-label" data-cc-phone>+91 95006 51544</span></a></div>
+  </div>
+</header>
+<main>
+  <section class="page-hero"><div class="container">
+    <div class="breadcrumbs"><a href="index.html">Home</a><span>/</span><span>FAQ</span></div>
+    <h1>Frequently Asked Questions</h1>
+  </div></section>
+  <section class="section"><div class="container" style="max-width:760px;" id="faq-list">
+    <div class="faq-item open"><div class="faq-q"><span>What documents do I need to rent a bike?</span><span>+</span></div><div class="faq-a">A valid driving licence and one government-issued photo ID (Aadhaar, passport, or voter ID).</div></div>
+    <div class="faq-item"><div class="faq-q"><span>Is a security deposit required?</span><span>+</span></div><div class="faq-a">Yes. A refundable deposit is collected at pickup and returned in full once the bike comes back undamaged.</div></div>
+    <div class="faq-item"><div class="faq-q"><span>Can I book by the hour?</span><span>+</span></div><div class="faq-a">Yes, most bikes can be rented hourly or daily — hourly rates apply automatically for short rentals.</div></div>
+    <div class="faq-item"><div class="faq-q"><span>Can someone drop the bike off at my hotel?</span><span>+</span></div><div class="faq-a">Yes, choose "Hotel pickup/drop" when booking and mention your hotel name in the notes field.</div></div>
+    <div class="faq-item"><div class="faq-q"><span>What happens if I return the bike late?</span><span>+</span></div><div class="faq-a">A 30-minute grace period is allowed. After that, the hourly rate applies for the extra time.</div></div>
+    <div class="faq-item"><div class="faq-q"><span>Can I cancel my booking?</span><span>+</span></div><div class="faq-a">Yes — see our <a href="terms.html#cancellation" style="color:var(--teal-dark); font-weight:600;">Cancellation Policy</a> for details.</div></div>
+  </div></section>
+</main>
+<footer class="site-footer"><div class="container"><div class="footer-bottom" style="border-top:none; padding-top:0;">
+  <span>© <span data-cc-year>2026</span> Cape Comorin. All Rights Reserved.</span><a href="index.html">Back to Home</a>
+</div></div></footer>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script>
+  document.getElementById("faq-list").addEventListener("click", e=>{
+    const q = e.target.closest(".faq-q");
+    if(!q) return;
+    q.parentElement.classList.toggle("open");
+  });
+</script>
+</body>
+</html>

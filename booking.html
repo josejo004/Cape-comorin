@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a Bike in Kanyakumari | Cape Comorin</title>
+<meta name="description" content="Book your scooter or motorcycle rental in Kanyakumari online in a few steps.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏍️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+<div class="topbar"><div class="container"><div class="topbar-scroll">
+  <span>🏍️ Easy Bike Rental</span><span>📍 Explore Kanyakumari</span><span>⚡ Quick Booking</span>
+  <a class="topbar-call" href="tel:9500651544" data-cc-tel>📞 <span data-cc-phone>+91 95006 51544</span></a>
+</div></div></div>
+<header class="site-header">
+  <div class="container nav-row">
+     <a href="index.html" class="logo">
+     <span class="logo-mark">
+  <img src="image/LOGO-UPDATED.png" alt="Cape Comorin Logo">
+</span>
+      <span class="logo-text"><strong>CAPE COMORIN</strong><small>Bike Rental &amp; Tours</small></span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html">Home</a><a href="index.html#about">About</a><a href="bikes.html">Bikes</a>
+      <a href="tourist-places.html">Tourist Places</a><a href="blog.html">Blog</a><a href="booking.html" class="active">Booking Now</a>
+    </nav>
+    <div class="nav-right">
+      <a class="nav-call" href="tel:9500651544" data-cc-tel><span class="icon-circle">📞</span><span class="call-label" data-cc-phone>+91 95006 51544</span></a>
+      <a class="nav-login" href="login.html">Login</a>
+      <button class="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-panel" role="dialog" aria-label="Mobile menu">
+    <a href="index.html">Home</a><a href="index.html#about">About</a><a href="bikes.html">Bikes</a>
+    <a href="tourist-places.html">Tourist Places</a><a href="blog.html">Blog</a><a href="booking.html">Booking Now</a>
+    <a href="login.html">Login</a>
+    <div class="mobile-call-strip"><span>📞</span><a href="tel:9500651544" data-cc-tel data-cc-phone>+91 95006 51544</a></div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="page-hero" style="padding-bottom:34px;">
+    <div class="container">
+      <div class="breadcrumbs"><a href="index.html">Home</a><span>/</span><span>Booking</span></div>
+      <h1>Book Your Bike</h1>
+      <p>Fill in your details and travel dates — we'll confirm your booking right away.</p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:44px;">
+    <div class="container">
+
+      <!-- Step 1: booking form -->
+      <div id="booking-step-form" class="booking-flow">
+        <div class="form-card">
+          <h2 style="margin-bottom:20px;">Rider &amp; Trip Details</h2>
+          <form id="booking-form">
+            <div class="form-grid">
+              <div class="field"><label for="bName">Customer Name</label><input id="bName" name="name" required></div>
+              <div class="field"><label for="bMobile">Mobile Number</label><input id="bMobile" name="mobile" type="tel" pattern="[0-9]{10}" required></div>
+              <div class="field full"><label for="bEmail">Email</label><input id="bEmail" name="email" type="email" required></div>
+              <div class="field full">
+                <label for="bBike">Bike</label>
+                <select id="bBike" name="bike" required></select>
+              </div>
+              <div class="field"><label for="bPickDate">Pickup Date</label><input id="bPickDate" name="pickupDate" type="date" required></div>
+              <div class="field"><label for="bPickTime">Pickup Time</label><input id="bPickTime" name="pickupTime" type="time" required></div>
+              <div class="field"><label for="bDropDate">Drop-off Date</label><input id="bDropDate" name="dropDate" type="date" required></div>
+              <div class="field"><label for="bDropTime">Drop-off Time</label><input id="bDropTime" name="dropTime" type="time" required></div>
+              <div class="field"><label for="bPickLoc">Pickup Location</label><input id="bPickLoc" name="pickupLoc" value="Cape Comorin Office — Beach Road"></div>
+              <div class="field"><label for="bDropLoc">Drop-off Location</label><input id="bDropLoc" name="dropLoc" value="Cape Comorin Office — Beach Road"></div>
+              <div class="field full"><label for="bNotes">Additional Notes</label><textarea id="bNotes" name="notes" rows="3" style="border:1px solid var(--line); border-radius:10px; padding:12px 14px; font-family:inherit; background:var(--sand);"></textarea></div>
+            </div>
+            <p class="field-error" id="booking-form-error" style="margin-top:10px;"></p>
+            <button type="submit" class="btn btn-amber btn-block" style="margin-top:20px;">Confirm Booking</button>
+          </form>
+        </div>
+
+        <aside class="booking-summary">
+          <h3 style="margin-bottom:16px;">Booking Summary</h3>
+          <div class="summary-row"><span>Bike</span><strong id="sum-bike">—</strong></div>
+          <div class="summary-row"><span>Rental Duration</span><strong id="sum-duration">—</strong></div>
+          <div class="summary-row"><span>Rental Price</span><strong id="sum-rental">₹0</strong></div>
+          <div class="summary-row"><span>Additional Charges</span><strong id="sum-extra">₹0</strong></div>
+          <div class="summary-row"><span>Security Deposit</span><strong id="sum-deposit">₹0</strong></div>
+          <div class="summary-row total"><span>Total Amount</span><strong id="sum-total">₹0</strong></div>
+          <p style="font-size:0.8rem; color:var(--ink-soft); margin-top:14px;">Security deposit is refunded after the bike is returned undamaged. Final total is confirmed at pickup.</p>
+        </aside>
+      </div>
+
+      <!-- Step 2: confirmation -->
+      <div id="booking-step-confirm" class="form-card confirm-box" style="display:none;">
+        <div class="confirm-icon">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+        <h2>Booking Confirmed</h2>
+        <p style="color:var(--ink-soft); margin-top:8px;">A confirmation has been recorded for your ride. Please bring your driving licence and a photo ID at pickup.</p>
+        <div class="booking-id" id="confirm-id"></div>
+        <p style="margin-top:16px;"><span class="status-pill status-pending" id="confirm-status">Pending</span></p>
+        <div style="display:flex; gap:12px; justify-content:center; margin-top:26px; flex-wrap:wrap;">
+          <a href="index.html" class="btn btn-outline-dark">Back to Home</a>
+          <a href="bikes.html" class="btn btn-amber">Browse More Bikes</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none; padding-top:0;">
+      <span>© <span data-cc-year>2026</span> Cape Comorin. All Rights Reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="floating-stack">
+  <a class="fab fab-whatsapp" data-cc-whatsapp href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">💬</a>
+  <a class="fab fab-call" href="tel:9500651544" data-cc-tel aria-label="Call Cape Comorin">📞</a>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/booking.js"></script>
+</body>
+</html>

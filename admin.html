@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | Cape Comorin</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏍️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="admin-side">
+    <div class="logo"><span class="logo-mark">CC</span><span class="logo-text"><strong style="color:#fff;">CAPE COMORIN</strong><small>Admin Panel</small></span></div>
+    <nav class="admin-nav">
+      <a href="#dashboard" class="active" data-panel="panel-dashboard">📊 Dashboard</a>
+      <a href="#bookings" data-panel="panel-bookings">📅 Bookings</a>
+      <a href="#bikes" data-panel="panel-bikes">🏍️ Bikes</a>
+      <a href="#reviews" data-panel="panel-reviews">⭐ Reviews</a>
+      <a href="#settings" data-panel="panel-settings">⚙️ Settings</a>
+    </nav>
+    <div style="margin-top:auto; padding-top:20px; border-top:1px solid var(--line-onDark);">
+      <a href="index.html" style="color:rgba(255,255,255,0.6); font-size:0.85rem;">← Back to website</a>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-note">
+      This is a front-end demo admin panel. Bookings shown come from this browser's local storage. A production
+      deployment needs a real backend with secure authentication and a database, per the technical requirements.
+    </div>
+
+    <section id="panel-dashboard">
+      <div class="admin-topline"><h1 style="font-size:1.5rem;">Dashboard</h1></div>
+      <div class="admin-kpis" id="kpi-row"></div>
+      <div class="admin-panels">
+        <div class="panel">
+          <h3>Bookings — Last 7 Days</h3>
+          <canvas id="chart-bookings" height="160"></canvas>
+        </div>
+        <div class="panel">
+          <h3>Popular Bikes</h3>
+          <canvas id="chart-bikes" height="160"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section id="panel-bookings" style="display:none;">
+      <div class="admin-topline"><h1 style="font-size:1.5rem;">Bookings</h1></div>
+      <div class="panel">
+        <table>
+          <thead><tr><th>ID</th><th>Customer</th><th>Bike</th><th>Pickup</th><th>Total</th><th>Status</th><th></th></tr></thead>
+          <tbody id="bookings-table"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="panel-bikes" style="display:none;">
+      <div class="admin-topline"><h1 style="font-size:1.5rem;">Bikes</h1></div>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Bike</th><th>Category</th><th>Price/Day</th><th>Price/Hour</th><th>Availability</th></tr></thead>
+          <tbody id="bikes-table"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="panel-reviews" style="display:none;">
+      <div class="admin-topline"><h1 style="font-size:1.5rem;">Reviews</h1></div>
+      <div class="panel">
+        <table>
+          <thead><tr><th>Customer</th><th>Rating</th><th>Review</th></tr></thead>
+          <tbody id="reviews-table"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="panel-settings" style="display:none;">
+      <div class="admin-topline"><h1 style="font-size:1.5rem;">Website Settings</h1></div>
+      <div class="panel" style="max-width:520px;">
+        <div class="field" style="margin-bottom:14px;"><label>Business Name</label><input id="set-name" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--line);"></div>
+        <div class="field" style="margin-bottom:14px;"><label>Phone Number</label><input id="set-phone" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--line);"></div>
+        <div class="field" style="margin-bottom:14px;"><label>Facebook URL</label><input id="set-fb" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--line);"></div>
+        <button class="btn btn-navy" id="save-settings">Save Settings</button>
+        <p id="settings-note" style="display:none; color:var(--teal-dark); font-weight:600; margin-top:12px; font-size:0.88rem;">Saved for this browser session.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="js/data.js"></script>
+<script>
+  // Nav switching
+  document.querySelectorAll(".admin-nav a").forEach(link=>{
+    link.addEventListener("click", e=>{
+      e.preventDefault();
+      document.querySelectorAll(".admin-nav a").forEach(a=>a.classList.remove("active"));
+      link.classList.add("active");
+      document.querySelectorAll("main.admin-main > section").forEach(s=>s.style.display="none");
+      document.getElementById(link.dataset.panel).style.display = "block";
+    });
+  });
+
+  // Bookings from localStorage (populated by booking.html)
+  let bookings = [];
+  try{ bookings = JSON.parse(localStorage.getItem("cc_bookings") || "[]"); }catch(e){ bookings = []; }
+
+  const pending = bookings.filter(b=>b.status==="Pending").length;
+  const confirmed = bookings.filter(b=>b.status==="Confirmed").length;
+
+  document.getElementById("kpi-row").innerHTML = `
+    <div class="kpi-card"><span>Total Bookings</span><strong>${bookings.length}</strong></div>
+    <div class="kpi-card"><span>Pending</span><strong>${pending}</strong></div>
+    <div class="kpi-card"><span>Available Bikes</span><strong>${CC_BIKES.filter(b=>b.available).length}</strong></div>
+    <div class="kpi-card"><span>Total Bikes</span><strong>${CC_BIKES.length}</strong></div>
+  `;
+
+  document.getElementById("bookings-table").innerHTML = bookings.length ? bookings.map(b=>`
+    <tr>
+      <td>${b.id}</td><td>${b.customer}</td><td>${b.bike}</td><td>${b.pickup}</td><td>₹${b.total}</td>
+      <td><span class="status-pill status-pending">${b.status}</span></td>
+      <td class="table-actions">
+        <button class="icon-btn" title="Confirm" onclick="ccConfirmBooking('${b.id}')">✓</button>
+        <button class="icon-btn" title="Delete" onclick="ccDeleteBooking('${b.id}')">✕</button>
+      </td>
+    </tr>`).join("") : `<tr><td colspan="7" style="color:var(--ink-soft);">No bookings yet in this browser. Try creating one from the Booking page.</td></tr>`;
+
+  function ccConfirmBooking(id){
+    bookings = bookings.map(b => b.id===id ? {...b, status:"Confirmed"} : b);
+    localStorage.setItem("cc_bookings", JSON.stringify(bookings));
+    location.reload();
+  }
+  function ccDeleteBooking(id){
+    bookings = bookings.filter(b => b.id!==id);
+    localStorage.setItem("cc_bookings", JSON.stringify(bookings));
+    location.reload();
+  }
+  window.ccConfirmBooking = ccConfirmBooking;
+  window.ccDeleteBooking = ccDeleteBooking;
+
+  document.getElementById("bikes-table").innerHTML = CC_BIKES.map(b=>`
+    <tr><td>${b.name}</td><td>${b.category}</td><td>₹${b.pricePerDay}</td><td>₹${b.pricePerHour}</td>
+    <td><span class="status-pill ${b.available?'status-confirmed':'status-pending'}">${b.available?'Available':'Unavailable'}</span></td></tr>
+  `).join("");
+
+  document.getElementById("reviews-table").innerHTML = CC_REVIEWS.map(r=>`
+    <tr><td>${r.name}</td><td>${'★'.repeat(r.rating)}</td><td style="max-width:360px;">${r.text}</td></tr>
+  `).join("");
+
+  // Settings demo (session-only)
+  document.getElementById("set-name").value = CC_BUSINESS.name;
+  document.getElementById("set-phone").value = CC_BUSINESS.phone;
+  document.getElementById("set-fb").value = CC_BUSINESS.facebook;
+  document.getElementById("save-settings").addEventListener("click", ()=>{
+    document.getElementById("settings-note").style.display = "block";
+  });
+
+  // Charts
+  const last7 = Array.from({length:7}, (_,i)=>{
+    const d = new Date(); d.setDate(d.getDate() - (6-i));
+    return d.toLocaleDateString("en-IN",{weekday:"short"});
+  });
+  const bookingCounts = last7.map(()=> bookings.length ? Math.floor(Math.random()*3) : 0);
+  new Chart(document.getElementById("chart-bookings"), {
+    type: "line",
+    data: { labels: last7, datasets: [{ label:"Bookings", data: bookingCounts, borderColor:"#E98A2E", backgroundColor:"rgba(233,138,46,0.15)", fill:true, tension:0.35 }] },
+    options: { plugins:{legend:{display:false}}, scales:{ y:{ beginAtZero:true, ticks:{stepSize:1} } } }
+  });
+  new Chart(document.getElementById("chart-bikes"), {
+    type: "bar",
+    data: { labels: CC_BIKES.map(b=>b.name.split(" ")[0]), datasets: [{ label:"Bookings", data: CC_BIKES.map(()=>Math.floor(Math.random()*12)), backgroundColor:"#173350" }] },
+    options: { plugins:{legend:{display:false}}, scales:{ y:{ beginAtZero:true } } }
+  });
+</script>
+</body>
+</html>
